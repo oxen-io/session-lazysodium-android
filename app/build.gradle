@@ -11,7 +11,7 @@ import java.security.Signature
 plugins {
     id 'com.android.library'
     id 'maven-publish'
-    id 'signing'
+//    id 'signing'
 }
 
 ext {
@@ -161,12 +161,12 @@ Signature.metaClass.getToSignArtifact = { ->
 }
 
 // Tasks
-signing {
+/*signing {
     // This will use the GPG Agent
     // to sign the jar
     useGpgCmd()
     sign publishing.publications
-}
+}*/
 
 task sourcesJar(type: Jar) {
     classifier = 'sources'
@@ -175,7 +175,7 @@ task sourcesJar(type: Jar) {
 
 task javadoc(type: Javadoc) {
     source = android.sourceSets.main.java.srcDirs
-    //classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
