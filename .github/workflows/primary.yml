@@ -14,13 +14,18 @@ jobs:
     runs-on: macos-latest
     strategy:
       matrix:
-        arch: [x86, x86_64]
+        arch: [x86, x86_64, arm64-v8a]
         api-level: [21, 29]
     steps:
       - name: Checkout (recursive)
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '11'
       - name: Run instrumentation checks
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -32,9 +37,9 @@ jobs:
     needs: test
     if: github.ref == 'refs/heads/master' && always()
     steps:
-      - uses: technote-space/workflow-conclusion-action@v2
+      - uses: technote-space/workflow-conclusion-action@v3
       - name: Checkout (recursive)
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: recursive
         if: env.WORKFLOW_CONCLUSION == 'success'
